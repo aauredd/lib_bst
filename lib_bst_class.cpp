@@ -9,9 +9,8 @@ private:
     Node* rchild;     
 
 public:
-
+    
     Node(int value) : data(value), weight(1), lchild(nullptr), rchild(nullptr) {}
-
     Node* insertR(int k) {
         if (k == data) {
             weight++;
@@ -42,6 +41,8 @@ public:
     }
 
     int getData() const { return data; }
+
+    
 };
 
 int main() {
@@ -57,3 +58,4 @@ int main() {
 
     return 0;
 }
+
