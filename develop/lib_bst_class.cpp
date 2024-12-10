@@ -3,18 +3,17 @@ using namespace std;
 
 class Node {
 private:
-    int data;         
-    int weight;       
-    Node* lchild;     
-    Node* rchild;     
+    int data;
+    int weight;
+    Node* lchild;
+    Node* rchild;
 
 public:
-
     Node(int value) : data(value), weight(1), lchild(nullptr), rchild(nullptr) {}
 
     Node* insertR(int k) {
         if (k == data) {
-            weight++;
+            this->weight++;
         } else if (k < data) {
             if (lchild == nullptr) {
                 lchild = new Node(k);
@@ -72,45 +71,88 @@ public:
     }
 
     bool searchR(int k) {
-    if (this == nullptr) {
-        return false;
-    }
-    if (data == k) {
-        return true;
-    } 
-    if (k < data) {
-        if (lchild != nullptr) {
-            return lchild->searchR(k);
-        } else {
+        if (this == nullptr) {
             return false;
         }
-    } else {
-        if (rchild != nullptr) {
-            return rchild->searchR(k);
+        if (this->data == k) { 
+            return true;
+        }
+        if (k < this->data) {
+            return this->lchild != nullptr && this->lchild->searchR(k);
         } else {
-            return false;
+            return this->rchild != nullptr && this->rchild->searchR(k);
         }
     }
-}
-
 
     void inOrder() {
-        if (lchild != nullptr) {
-            lchild->inOrder();
+        if (this->lchild != nullptr) { 
+            this->lchild->inOrder();
         }
-        cout << data << " ";
-        if (rchild != nullptr) {
-            rchild->inOrder();
+        cout << this->data << " "; 
+        if (this->rchild != nullptr) {
+            this->rchild->inOrder();
         }
     }
 
-    int getData() const { return data; }
+    void preOrder() {
+        cout << data << " ";
+        if (lchild != nullptr) {
+            lchild->preOrder();
+        }
+        if (rchild != nullptr) {
+            rchild->preOrder();
+        }
+    }
+
+    void postOrder() {
+        if (lchild != nullptr) {
+            lchild->postOrder();
+        }
+        if (rchild != nullptr) {
+            rchild->postOrder();
+        }
+        cout << data << " ";
+    }
+
+    Node* deleteNode(int k) {
+        if (k < data) {
+            if (lchild != nullptr) {
+                lchild = lchild->deleteNode(k);
+            }
+        } else if (k > data) {
+            if (rchild != nullptr) {
+                rchild = rchild->deleteNode(k);
+            }
+        } else {
+            if (lchild == nullptr && rchild == nullptr) {
+                delete this;
+                return nullptr;
+            } else if (lchild == nullptr) {
+                Node* temp = rchild;
+                delete this;
+                return temp;
+            } else if (rchild == nullptr) {
+                Node* temp = lchild;
+                delete this;
+                return temp;
+            } else {
+                Node* temp = rchild;
+                while (temp->lchild != nullptr) {
+                    temp = temp->lchild;
+                }
+                data = temp->data;
+                rchild = rchild->deleteNode(temp->data);
+            }
+        }
+        return this;
+    }
 };
 
 int main() {
     Node* root = new Node(49);
 
-
+    root->insertR(30);
+    root->insertI(70);
 
     return 0;
 }
